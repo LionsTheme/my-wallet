@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { hash } from 'bcrypt';
 
-import { IsMongoId, Validator } from 'class-validator';
+import { IsString, Validator } from 'class-validator';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from '../../shared/dto/createUser.dto';
 import { UpdateUserDto } from '../../shared/dto/updateUser.dto';
@@ -29,8 +29,8 @@ export class UserService {
   }
 
   async updateUser(id: string, dto: Partial<UpdateUserDto>) {
-    if (!this.validator.validate(id, IsMongoId()))
-      throw new BadRequestException('Id must be a type of MongoId');
+    if (!this.validator.validate(id, IsString))
+      throw new BadRequestException('Id must be a type of string');
 
     return this.prismaSerice.user.update({
       where: { id },
